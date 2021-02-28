@@ -24,7 +24,7 @@ import br.com.mauda.seminario.cientificos.junit.util.ErrorTestManager;
  * @author Mauda
  */
 
-class RunnerTestes {
+class RunnerTest {
 
     static final String TESTE_PACKAGE = "br.com.mauda.seminario.cientificos.junit.tests.";
 
