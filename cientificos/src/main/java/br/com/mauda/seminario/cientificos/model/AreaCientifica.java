@@ -7,7 +7,7 @@ public class AreaCientifica {
 
     private Long id;
     private String nome;
-    private List<Curso> cursos = new ArrayList<>();
+    private final List<Curso> cursos = new ArrayList<>();
 
     public void adicionarCurso(Curso curso) {
         curso.setAreaCientifica(this);
@@ -61,12 +61,7 @@ public class AreaCientifica {
         }
         AreaCientifica other = (AreaCientifica) obj;
         if (this.id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!this.id.equals(other.id)) {
-            return false;
-        }
-        return true;
+            return other.id == null;
+        } else return this.id.equals(other.id);
     }
 }

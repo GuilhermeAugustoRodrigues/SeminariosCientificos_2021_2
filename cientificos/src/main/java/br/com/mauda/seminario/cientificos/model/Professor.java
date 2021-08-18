@@ -11,7 +11,7 @@ public class Professor {
     private String email;
     private Double salario;
     private Instituicao instituicao;
-    private List<Seminario> seminarios = new ArrayList<>();
+    private final List<Seminario> seminarios = new ArrayList<>();
 
     public void adicionarSeminario(Seminario seminario) {
         seminarios.add(seminario);
@@ -98,12 +98,7 @@ public class Professor {
         }
         Professor other = (Professor) obj;
         if (this.id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!this.id.equals(other.id)) {
-            return false;
-        }
-        return true;
+            return other.id == null;
+        } else return this.id.equals(other.id);
     }
 }

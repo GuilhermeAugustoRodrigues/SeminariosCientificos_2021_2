@@ -9,7 +9,7 @@ public class Estudante {
     private String nome;
     private String telefone;
     private String email;
-    private List<Inscricao> inscricoes = new ArrayList<>();
+    private final List<Inscricao> inscricoes = new ArrayList<>();
     private Instituicao instituicao;
 
     public Estudante(Instituicao instituicao) {
@@ -30,8 +30,7 @@ public class Estudante {
 
     public Estudante() {}
 
-    public Estudante(Long id, String nome, String telefone, String email) {
-        this.id = id;
+    public Estudante(String nome, String telefone, String email) {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
@@ -102,12 +101,7 @@ public class Estudante {
         }
         Estudante other = (Estudante) obj;
         if (this.id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!this.id.equals(other.id)) {
-            return false;
-        }
-        return true;
+            return other.id == null;
+        } else return this.id.equals(other.id);
     }
 }

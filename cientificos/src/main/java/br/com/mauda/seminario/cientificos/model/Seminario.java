@@ -1,6 +1,7 @@
 package br.com.mauda.seminario.cientificos.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,28 +12,28 @@ public class Seminario {
     private String descricao;
     private boolean mesaRedonda;
     private LocalDate data;
-    private Integer qtdInscricoes;
-    private List<AreaCientifica> areasCientificas = new ArrayList<>();
-    private List<Inscricao> inscricoes = new ArrayList<>();
-    private List<Professor> professores = new ArrayList<>();
+    private final Integer qtdInscricoes;
+    private final List<AreaCientifica> areasCientificas = new ArrayList<>();
+    private final List<Inscricao> inscricoes = new ArrayList<>();
+    private final List<Professor> professores = new ArrayList<>();
 
     public void adicionarAreaCientifica(AreaCientifica areaCientifica) {
         areasCientificas.add(areaCientifica);
     }
-    public void adicionarInscricao(Inscricao inscricao) {
-        inscricao.setSeminario(this);
-        inscricoes.add(inscricao);
-    }
+
     public void adicionarProfessor(Professor professor) {
         professor.adicionarSeminario(this);
         professores.add(professor);
     }
+
     public boolean possuiAreaCientifica(AreaCientifica areaCientifica) {
         return areasCientificas.contains(areaCientifica);
     }
+
     public boolean possuiInscricao(Inscricao inscricao) {
         return inscricoes.contains(inscricao);
     }
+
     public boolean possuiProfessor(Professor professor) {
         return professores.contains(professor);
     }
@@ -42,6 +43,18 @@ public class Seminario {
         this.areasCientificas.add(areaCientifica);
         professor.adicionarSeminario(this);
         professores.add(professor);
+        createIncricoes();
+    }
+
+    private void createIncricoes() {
+        for (int i = 0; i < qtdInscricoes; i++) {
+            adicionarInscricao(new Inscricao(null, LocalDateTime.now(), null, null));
+        }
+    }
+
+    public void adicionarInscricao(Inscricao inscricao) {
+        inscricao.setSeminario(this);
+        inscricoes.add(inscricao);
     }
 
     public Long getId() {
@@ -117,12 +130,7 @@ public class Seminario {
         }
         Seminario other = (Seminario) obj;
         if (this.id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!this.id.equals(other.id)) {
-            return false;
-        }
-        return true;
+            return other.id == null;
+        } else return this.id.equals(other.id);
     }
 }

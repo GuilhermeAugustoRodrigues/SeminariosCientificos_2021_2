@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 public class Inscricao {
 
     private Long id;
-    private boolean direitoMaterial;
-    private LocalDateTime dataCriacao;
+    private Boolean direitoMaterial;
+    private final LocalDateTime dataCriacao;
     private LocalDateTime dataCompra;
     private LocalDateTime dataCheckIn;
     private Estudante estudante;
@@ -18,25 +18,31 @@ public class Inscricao {
     public void comprar(Estudante estudante, boolean direitoMaterial) {
         this.estudante = estudante;
         this.direitoMaterial = direitoMaterial;
-        this.situacao = SituacaoInscricaoEnum.COMPRADO;
+        situacao = SituacaoInscricaoEnum.COMPRADO;
+        dataCompra = LocalDateTime.now();
+        estudante.adicionarInscricao(this);
     }
 
     public void cancelarCompra() {
-        this.estudante = null;
-        this.direitoMaterial = false;
-        this.situacao = SituacaoInscricaoEnum.DISPONIVEL;
+        estudante.removerInscricao(this);
+        estudante = null;
+        direitoMaterial = null;
+        dataCompra = null;
+        dataCheckIn = null;
+        situacao = SituacaoInscricaoEnum.DISPONIVEL;
     }
 
     public void realizarCheckIn() {
-        this.situacao = SituacaoInscricaoEnum.CHECKIN;
+        dataCheckIn = LocalDateTime.now();
+        situacao = SituacaoInscricaoEnum.CHECKIN;
     }
 
-    public Inscricao(Long id, boolean direitoMaterial, LocalDateTime dataCriacao, LocalDateTime dataCompra, LocalDateTime dataCheckIn) {
-        this.id = id;
+    public Inscricao(Boolean direitoMaterial, LocalDateTime dataCriacao, LocalDateTime dataCompra, LocalDateTime dataCheckIn) {
         this.direitoMaterial = direitoMaterial;
         this.dataCriacao = dataCriacao;
         this.dataCompra = dataCompra;
         this.dataCheckIn = dataCheckIn;
+        situacao = SituacaoInscricaoEnum.DISPONIVEL;
     }
 
     public Long getId() {
@@ -47,7 +53,7 @@ public class Inscricao {
         this.id = id;
     }
 
-    public boolean getDireitoMaterial() {
+    public Boolean getDireitoMaterial() {
         return direitoMaterial;
     }
 
@@ -104,12 +110,7 @@ public class Inscricao {
         }
         Inscricao other = (Inscricao) obj;
         if (this.id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!this.id.equals(other.id)) {
-            return false;
-        }
-        return true;
+            return other.id == null;
+        } else return this.id.equals(other.id);
     }
 }
