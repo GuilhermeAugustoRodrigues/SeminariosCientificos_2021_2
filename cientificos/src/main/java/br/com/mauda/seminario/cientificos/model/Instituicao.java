@@ -3,8 +3,7 @@ package br.com.mauda.seminario.cientificos.model;
 import java.io.Serializable;
 
 public class Instituicao implements Serializable {
-
-    private static final long serialVersionUID = 997084310847650620L;
+    private static final long serialVersionUID = 3L;
 
     private Long id;
     private String nome;
@@ -82,12 +81,7 @@ public class Instituicao implements Serializable {
         }
         Instituicao other = (Instituicao) obj;
         if (this.id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!this.id.equals(other.id)) {
-            return false;
-        }
-        return true;
+            return other.id == null;
+        } else return this.id.equals(other.id);
     }
 }
