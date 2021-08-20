@@ -1,24 +1,42 @@
 package br.com.mauda.seminario.cientificos.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Seminario {
+    private static final long serialVersionUID = 7L;
 
     private Long id;
     private String titulo;
     private String descricao;
-    private boolean mesaRedonda;
+    private Boolean mesaRedonda;
     private LocalDate data;
     private final Integer qtdInscricoes;
     private final List<AreaCientifica> areasCientificas = new ArrayList<>();
     private final List<Inscricao> inscricoes = new ArrayList<>();
     private final List<Professor> professores = new ArrayList<>();
 
+    public Seminario(AreaCientifica areaCientifica, Professor professor, Integer qtdInscricoes) {
+        this.qtdInscricoes = qtdInscricoes;
+        this.areasCientificas.add(areaCientifica);
+        professor.adicionarSeminario(this);
+        professores.add(professor);
+        createIncricoes();
+    }
+
+    private void createIncricoes() {
+        for (int i = 0; i < qtdInscricoes; i++) {
+            adicionarInscricao(new Inscricao(this));
+        }
+    }
+
     public void adicionarAreaCientifica(AreaCientifica areaCientifica) {
         areasCientificas.add(areaCientifica);
+    }
+
+    public void adicionarInscricao(Inscricao inscricao) {
+        inscricoes.add(inscricao);
     }
 
     public void adicionarProfessor(Professor professor) {
@@ -36,25 +54,6 @@ public class Seminario {
 
     public boolean possuiProfessor(Professor professor) {
         return professores.contains(professor);
-    }
-
-    public Seminario(AreaCientifica areaCientifica, Professor professor, Integer qtdInscricoes) {
-        this.qtdInscricoes = qtdInscricoes;
-        this.areasCientificas.add(areaCientifica);
-        professor.adicionarSeminario(this);
-        professores.add(professor);
-        createIncricoes();
-    }
-
-    private void createIncricoes() {
-        for (int i = 0; i < qtdInscricoes; i++) {
-            adicionarInscricao(new Inscricao(null, LocalDateTime.now(), null, null));
-        }
-    }
-
-    public void adicionarInscricao(Inscricao inscricao) {
-        inscricao.setSeminario(this);
-        inscricoes.add(inscricao);
     }
 
     public Long getId() {
@@ -81,7 +80,11 @@ public class Seminario {
         this.descricao = descricao;
     }
 
-    public void setMesaRedonda(boolean mesaRedonda) {
+    public boolean getMesaRedonda() {
+        return mesaRedonda;
+    }
+
+    public void setMesaRedonda(Boolean mesaRedonda) {
         this.mesaRedonda = mesaRedonda;
     }
 

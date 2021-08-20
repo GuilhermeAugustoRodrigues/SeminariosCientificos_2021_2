@@ -3,8 +3,7 @@ package br.com.mauda.seminario.cientificos.model;
 import java.io.Serializable;
 
 public class Instituicao implements Serializable {
-
-    private static final long serialVersionUID = 997084310847650620L;
+    private static final long serialVersionUID = 3L;
 
     private Long id;
     private String nome;

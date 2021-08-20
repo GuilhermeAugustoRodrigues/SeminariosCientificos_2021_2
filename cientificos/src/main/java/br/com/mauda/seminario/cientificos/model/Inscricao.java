@@ -5,6 +5,7 @@ import br.com.mauda.seminario.cientificos.model.enums.SituacaoInscricaoEnum;
 import java.time.LocalDateTime;
 
 public class Inscricao {
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private Boolean direitoMaterial;
@@ -13,7 +14,13 @@ public class Inscricao {
     private LocalDateTime dataCheckIn;
     private Estudante estudante;
     private SituacaoInscricaoEnum situacao;
-    private Seminario seminario;
+    private final Seminario seminario;
+
+    public Inscricao(Seminario seminario) {
+        this.seminario = seminario;
+        dataCriacao = LocalDateTime.now();
+        situacao = SituacaoInscricaoEnum.DISPONIVEL;
+    }
 
     public void comprar(Estudante estudante, boolean direitoMaterial) {
         this.estudante = estudante;
@@ -28,21 +35,12 @@ public class Inscricao {
         estudante = null;
         direitoMaterial = null;
         dataCompra = null;
-        dataCheckIn = null;
         situacao = SituacaoInscricaoEnum.DISPONIVEL;
     }
 
     public void realizarCheckIn() {
         dataCheckIn = LocalDateTime.now();
         situacao = SituacaoInscricaoEnum.CHECKIN;
-    }
-
-    public Inscricao(Boolean direitoMaterial, LocalDateTime dataCriacao, LocalDateTime dataCompra, LocalDateTime dataCheckIn) {
-        this.direitoMaterial = direitoMaterial;
-        this.dataCriacao = dataCriacao;
-        this.dataCompra = dataCompra;
-        this.dataCheckIn = dataCheckIn;
-        situacao = SituacaoInscricaoEnum.DISPONIVEL;
     }
 
     public Long getId() {
@@ -73,16 +71,8 @@ public class Inscricao {
         return estudante;
     }
 
-    public void setEstudante(Estudante estudante) {
-        this.estudante = estudante;
-    }
-
     public Seminario getSeminario() {
         return seminario;
-    }
-
-    public void setSeminario(Seminario seminario) {
-        this.seminario = seminario;
     }
 
     public SituacaoInscricaoEnum getSituacao() {

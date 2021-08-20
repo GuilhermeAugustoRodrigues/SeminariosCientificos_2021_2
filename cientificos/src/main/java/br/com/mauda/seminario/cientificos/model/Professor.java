@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Professor {
+    private static final long serialVersionUID = 2L;
 
     private Long id;
     private String nome;
     private String telefone;
     private String email;
     private Double salario;
-    private Instituicao instituicao;
+    private final Instituicao instituicao;
     private final List<Seminario> seminarios = new ArrayList<>();
+
+    public Professor(Instituicao instituicao) {
+        this.instituicao = instituicao;
+    }
 
     public void adicionarSeminario(Seminario seminario) {
         seminarios.add(seminario);
@@ -19,10 +24,6 @@ public class Professor {
 
     public boolean possuiSeminario(Seminario seminario) {
         return seminarios.contains(seminario);
-    }
-
-    public Professor(Instituicao instituicao) {
-        this.instituicao = instituicao;
     }
 
     public Long getId() {
@@ -67,10 +68,6 @@ public class Professor {
 
     public Instituicao getInstituicao() {
         return instituicao;
-    }
-
-    public void setInstituicao(Instituicao instituicao) {
-        this.instituicao = instituicao;
     }
 
     public List<Seminario> getSeminarios() {

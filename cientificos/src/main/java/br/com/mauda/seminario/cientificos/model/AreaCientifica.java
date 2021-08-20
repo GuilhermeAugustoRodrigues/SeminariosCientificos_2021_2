@@ -4,21 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AreaCientifica {
+    private static final long serialVersionUID = 6L;
 
     private Long id;
     private String nome;
     private final List<Curso> cursos = new ArrayList<>();
 
     public void adicionarCurso(Curso curso) {
-        curso.setAreaCientifica(this);
         cursos.add(curso);
     }
 
     public boolean possuiCurso(Curso curso) {
         return cursos.contains(curso);
     }
-
-    public AreaCientifica() {}
 
     public Long getId() {
         return id;

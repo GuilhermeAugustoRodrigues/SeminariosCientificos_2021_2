@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Estudante {
+    private static final long serialVersionUID = 4L;
 
     private Long id;
     private String nome;
     private String telefone;
     private String email;
     private final List<Inscricao> inscricoes = new ArrayList<>();
-    private Instituicao instituicao;
+    private final Instituicao instituicao;
 
     public Estudante(Instituicao instituicao) {
         this.instituicao = instituicao;
@@ -26,14 +27,6 @@ public class Estudante {
 
     public void removerInscricao(Inscricao inscricao) {
         inscricoes.remove(inscricao);
-    }
-
-    public Estudante() {}
-
-    public Estudante(String nome, String telefone, String email) {
-        this.nome = nome;
-        this.telefone = telefone;
-        this.email = email;
     }
 
     public Long getId() {
@@ -70,10 +63,6 @@ public class Estudante {
 
     public List<Inscricao> getInscricoes() {
         return inscricoes;
-    }
-
-    public void setInstituicao(Instituicao instituicao) {
-        this.instituicao = instituicao;
     }
 
     public Instituicao getInstituicao() {

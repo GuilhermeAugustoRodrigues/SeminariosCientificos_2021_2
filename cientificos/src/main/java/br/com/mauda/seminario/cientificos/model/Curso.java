@@ -1,13 +1,14 @@
 package br.com.mauda.seminario.cientificos.model;
 
 public class Curso {
+    private static final long serialVersionUID = 5L;
 
     private Long id;
     private String nome;
-    private AreaCientifica areaCientifica;
+    private final AreaCientifica areaCientifica;
 
     public Curso(AreaCientifica areaCientifica) {
-        areaCientifica.getCursos().add(this);
+        areaCientifica.adicionarCurso(this);
         this.areaCientifica = areaCientifica;
     }
 
@@ -29,10 +30,6 @@ public class Curso {
 
     public AreaCientifica getAreaCientifica() {
         return areaCientifica;
-    }
-
-    public void setAreaCientifica(AreaCientifica areaCientifica) {
-        this.areaCientifica = areaCientifica;
     }
 
     @Override
