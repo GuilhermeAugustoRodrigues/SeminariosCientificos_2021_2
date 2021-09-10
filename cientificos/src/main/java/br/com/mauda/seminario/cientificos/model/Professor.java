@@ -1,9 +1,15 @@
 package br.com.mauda.seminario.cientificos.model;
 
+import br.com.mauda.seminario.cientificos.exception.ObjetoNuloException;
+import br.com.mauda.seminario.cientificos.exception.SeminariosCientificosException;
+import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
+import br.com.mauda.seminario.cientificos.util.ListUtils;
+import br.com.mauda.seminario.cientificos.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Professor {
+public class Professor implements DataValidation {
     private static final long serialVersionUID = 2L;
 
     private Long id;
@@ -97,5 +103,29 @@ public class Professor {
         if (this.id == null) {
             return other.id == null;
         } else return this.id.equals(other.id);
+    }
+
+    @Override
+    public void validateForDataModification() {
+        String errorMessage = null;
+        if (!StringUtils.isValidEmail(email, 50)) {
+            errorMessage = "ER0060";
+        }
+        if (!StringUtils.isValidString(nome, 50)) {
+            errorMessage = "ER0061";
+        }
+        if (!StringUtils.isValidString(telefone, 15)) {
+            errorMessage = "ER0062";
+        }
+        if (salario == null || salario <= 0) {
+            errorMessage = "ER0063";
+        }
+        if (errorMessage != null) {
+            throw new SeminariosCientificosException(errorMessage);
+        }
+        if (instituicao == null || !ListUtils.isValidList(seminarios, false)) {
+            throw new ObjetoNuloException();
+        }
+        instituicao.validateForDataModification();
     }
 }

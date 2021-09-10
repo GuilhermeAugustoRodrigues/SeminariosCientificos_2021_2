@@ -1,8 +1,10 @@
 package br.com.mauda.seminario.cientificos.model;
 
-import java.io.Serializable;
+import br.com.mauda.seminario.cientificos.exception.SeminariosCientificosException;
+import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
+import br.com.mauda.seminario.cientificos.util.StringUtils;
 
-public class Instituicao implements Serializable {
+public class Instituicao implements DataValidation {
     private static final long serialVersionUID = 3L;
 
     private Long id;
@@ -83,5 +85,28 @@ public class Instituicao implements Serializable {
         if (this.id == null) {
             return other.id == null;
         } else return this.id.equals(other.id);
+    }
+
+    @Override
+    public void validateForDataModification() {
+        String errorMessage = null;
+        if (!StringUtils.isValidString(cidade, 50)) {
+            errorMessage = "ER0050";
+        }
+        if (!StringUtils.isValidString(estado, 50)) {
+            errorMessage = "ER0051";
+        }
+        if (!StringUtils.isValidString(nome, 100)) {
+            errorMessage = "ER0052";
+        }
+        if (!StringUtils.isValidString(pais, 50)) {
+            errorMessage = "ER0053";
+        }
+        if (!StringUtils.isValidString(sigla, 10)) {
+            errorMessage = "ER0054";
+        }
+        if (errorMessage != null) {
+            throw new SeminariosCientificosException(errorMessage);
+        }
     }
 }

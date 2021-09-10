@@ -1,10 +1,16 @@
 package br.com.mauda.seminario.cientificos.model;
 
+import br.com.mauda.seminario.cientificos.exception.ObjetoNuloException;
+import br.com.mauda.seminario.cientificos.exception.SeminariosCientificosException;
+import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
+import br.com.mauda.seminario.cientificos.util.ListUtils;
+import br.com.mauda.seminario.cientificos.util.StringUtils;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Seminario {
+public class Seminario implements DataValidation {
     private static final long serialVersionUID = 7L;
 
     private Long id;
@@ -12,7 +18,7 @@ public class Seminario {
     private String descricao;
     private Boolean mesaRedonda;
     private LocalDate data;
-    private final Integer qtdInscricoes;
+    private Integer qtdInscricoes;
     private final List<AreaCientifica> areasCientificas = new ArrayList<>();
     private final List<Inscricao> inscricoes = new ArrayList<>();
     private final List<Professor> professores = new ArrayList<>();
@@ -40,8 +46,10 @@ public class Seminario {
     }
 
     public void adicionarProfessor(Professor professor) {
-        professor.adicionarSeminario(this);
         professores.add(professor);
+        if (professor != null) {
+            professor.adicionarSeminario(this);
+        }
     }
 
     public boolean possuiAreaCientifica(AreaCientifica areaCientifica) {
@@ -100,6 +108,10 @@ public class Seminario {
         return qtdInscricoes;
     }
 
+    public void setQtdInscricoes(Integer qtdInscricoes) {
+        this.qtdInscricoes = qtdInscricoes;
+    }
+
     public List<AreaCientifica> getAreasCientificas() {
         return areasCientificas;
     }
@@ -136,4 +148,43 @@ public class Seminario {
             return other.id == null;
         } else return this.id.equals(other.id);
     }
+
+    @Override
+    public void validateForDataModification() {
+        String errorMessage = null;
+        if (data == null || data.isBefore(LocalDate.now())) {
+            errorMessage = "ER0070";
+        }
+        if (!StringUtils.isValidString(descricao, 200)) {
+            errorMessage = "ER0071";
+        }
+        if (!StringUtils.isValidString(titulo, 50)) {
+            errorMessage = "ER0072";
+        }
+        if (mesaRedonda == null) {
+            errorMessage = "ER0073";
+        }
+        if (qtdInscricoes == null || qtdInscricoes <= 0) {
+            errorMessage = "ER0074";
+        }
+        if (ListUtils.isEmpty(professores)) {
+            errorMessage = "ER0075";
+        }
+        if (ListUtils.isEmpty(areasCientificas)) {
+            errorMessage = "ER0076";
+        }
+        if (errorMessage != null) {
+            throw new SeminariosCientificosException(errorMessage);
+        }
+        if (!ListUtils.isValidList(inscricoes, true)) {
+            throw new ObjetoNuloException();
+        }
+        if (!ListUtils.isValidList(professores, true)) {
+            throw new ObjetoNuloException();
+        }
+        if (!ListUtils.isValidList(areasCientificas, true)) {
+            throw new ObjetoNuloException();
+        }
+    }
 }
+
