@@ -1,6 +1,11 @@
 package br.com.mauda.seminario.cientificos.model;
 
-public class Curso {
+import br.com.mauda.seminario.cientificos.exception.ObjetoNuloException;
+import br.com.mauda.seminario.cientificos.exception.SeminariosCientificosException;
+import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
+import br.com.mauda.seminario.cientificos.util.StringUtils;
+
+public class Curso implements DataValidation {
     private static final long serialVersionUID = 5L;
 
     private Long id;
@@ -55,5 +60,16 @@ public class Curso {
         if (this.id == null) {
             return other.id == null;
         } else return this.id.equals(other.id);
+    }
+
+    @Override
+    public void validateForDataModification() {
+        if (!StringUtils.isValidString(nome, 50)) {
+            throw new SeminariosCientificosException("ER0020");
+        }
+        if (areaCientifica == null) {
+            throw new ObjetoNuloException();
+        }
+        areaCientifica.validateForDataModification();
     }
 }

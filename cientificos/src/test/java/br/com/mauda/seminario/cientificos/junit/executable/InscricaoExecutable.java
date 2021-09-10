@@ -51,13 +51,13 @@ public class InscricaoExecutable implements Executable {
                 + inscricao.getEstudante().getNome() + " nao contem a inscricao em questao - associacao bidirecional nao foi realizada");
 
             assertNotNull(inscricao.getDataCompra(), "A inscricao deve possuir uma data de compra");
-            assertTrue(LocalDateTime.now().isAfter(inscricao.getDataCriacao()), "A inscricao não pode possuir uma data de compra no futuro");
+            assertTrue(LocalDateTime.now().isAfter(inscricao.getDataCompra()), "A inscricao não pode possuir uma data de compra no futuro");
 
             if (SituacaoInscricaoEnum.COMPRADO.equals(inscricao.getSituacao())) {
                 assertNull(inscricao.getDataCheckIn(), "A inscricao não deve possuir um data de checkin");
             } else {
                 assertNotNull(inscricao.getDataCheckIn(), "A inscricao deve possuir um data de checkin");
-                assertTrue(LocalDateTime.now().isAfter(inscricao.getDataCriacao()), "A inscricao não pode possuir uma data de checkin no futuro");
+                assertTrue(LocalDateTime.now().isAfter(inscricao.getDataCheckIn()), "A inscricao não pode possuir uma data de checkin no futuro");
             }
         }
 

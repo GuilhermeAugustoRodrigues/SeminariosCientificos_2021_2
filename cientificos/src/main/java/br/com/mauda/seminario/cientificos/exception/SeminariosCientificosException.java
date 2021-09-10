@@ -6,11 +6,8 @@ package br.com.mauda.seminario.cientificos.exception;
  * @author Mauda
  *
  */
- 
-//Comentario para testes de conflito entre arquivos diferentes 
 
 public class SeminariosCientificosException extends RuntimeException {
-
     private static final long serialVersionUID = 4928599035264976611L;
 
     public SeminariosCientificosException(String message) {

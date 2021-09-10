@@ -1,10 +1,12 @@
 package br.com.mauda.seminario.cientificos.model;
 
+import br.com.mauda.seminario.cientificos.exception.ObjetoNuloException;
 import br.com.mauda.seminario.cientificos.model.enums.SituacaoInscricaoEnum;
+import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
 
 import java.time.LocalDateTime;
 
-public class Inscricao {
+public class Inscricao implements DataValidation {
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -102,5 +104,18 @@ public class Inscricao {
         if (this.id == null) {
             return other.id == null;
         } else return this.id.equals(other.id);
+    }
+
+    @Override
+    public void validateForDataModification() {
+        if (situacao == null || seminario == null ) {
+            throw new ObjetoNuloException();
+        }
+        if (situacao != SituacaoInscricaoEnum.DISPONIVEL) {
+            if (direitoMaterial == null || estudante == null) {
+                throw new ObjetoNuloException();
+            }
+            estudante.validateForDataModification();
+        }
     }
 }

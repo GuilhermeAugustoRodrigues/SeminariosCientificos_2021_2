@@ -27,6 +27,7 @@ import br.com.mauda.seminario.cientificos.junit.util.ErrorTestManager;
 class RunnerTest {
 
     static final String TESTE_PACKAGE = "br.com.mauda.seminario.cientificos.junit.tests.";
+    static final String TESTE_VALIDACOES_PACKAGE = "br.com.mauda.seminario.cientificos.junit.tests.validacao.";
 
     @Test
     void execucao() {
@@ -40,7 +41,17 @@ class RunnerTest {
                 DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteSeminario"),
                 DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAcaoComprarSobreInscricao"),
                 DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAcaoCancelarCompraSobreInscricao"),
-                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAcaoCheckInSobreInscricao"))
+                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAcaoCheckInSobreInscricao"),
+
+                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAreaCientifica"),
+                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoCurso"),
+                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoInstituicao"),
+                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoEstudante"),
+                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoProfessor"),
+                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoSeminario"),
+                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAcaoComprarInscricao"),
+                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAcaoCancelarCompraInscricao"),
+                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAcaoCheckInInscricao"))
             .build();
         SummaryGeneratingListener listener = new SummaryGeneratingListener();
         Launcher launcher = LauncherFactory.create();
