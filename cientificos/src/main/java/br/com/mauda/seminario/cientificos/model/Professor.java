@@ -107,6 +107,17 @@ public class Professor implements DataValidation {
 
     @Override
     public void validateForDataModification() {
+        String errorMessage = validateFields();
+        if (errorMessage != null) {
+            throw new SeminariosCientificosException(errorMessage);
+        }
+        if (instituicao == null || !ListUtils.isValidList(seminarios, false)) {
+            throw new ObjetoNuloException();
+        }
+        instituicao.validateForDataModification();
+    }
+
+    private String validateFields() {
         String errorMessage = null;
         if (!StringUtils.isValidEmail(email, 50)) {
             errorMessage = "ER0060";
@@ -120,12 +131,6 @@ public class Professor implements DataValidation {
         if (salario == null || salario <= 0) {
             errorMessage = "ER0063";
         }
-        if (errorMessage != null) {
-            throw new SeminariosCientificosException(errorMessage);
-        }
-        if (instituicao == null || !ListUtils.isValidList(seminarios, false)) {
-            throw new ObjetoNuloException();
-        }
-        instituicao.validateForDataModification();
+        return errorMessage;
     }
 }

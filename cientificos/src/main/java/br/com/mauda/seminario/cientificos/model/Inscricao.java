@@ -111,7 +111,7 @@ public class Inscricao implements DataValidation {
         if (situacao == null || seminario == null ) {
             throw new ObjetoNuloException();
         }
-        if (situacao != SituacaoInscricaoEnum.DISPONIVEL) {
+        if (!SituacaoInscricaoEnum.DISPONIVEL.equals(situacao)) {
             if (direitoMaterial == null || estudante == null) {
                 throw new ObjetoNuloException();
             }

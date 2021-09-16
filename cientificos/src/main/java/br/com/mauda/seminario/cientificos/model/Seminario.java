@@ -151,6 +151,11 @@ public class Seminario implements DataValidation {
 
     @Override
     public void validateForDataModification() {
+        validateFields();
+        validateLists();
+    }
+
+    private void validateFields() {
         String errorMessage = null;
         if (data == null || data.isBefore(LocalDate.now())) {
             errorMessage = "ER0070";
@@ -176,13 +181,10 @@ public class Seminario implements DataValidation {
         if (errorMessage != null) {
             throw new SeminariosCientificosException(errorMessage);
         }
-        if (!ListUtils.isValidList(inscricoes, true)) {
-            throw new ObjetoNuloException();
-        }
-        if (!ListUtils.isValidList(professores, true)) {
-            throw new ObjetoNuloException();
-        }
-        if (!ListUtils.isValidList(areasCientificas, true)) {
+    }
+
+    private void validateLists() {
+        if (!ListUtils.isValidList(inscricoes, true) || !ListUtils.isValidList(professores, true) || !ListUtils.isValidList(areasCientificas, true)) {
             throw new ObjetoNuloException();
         }
     }

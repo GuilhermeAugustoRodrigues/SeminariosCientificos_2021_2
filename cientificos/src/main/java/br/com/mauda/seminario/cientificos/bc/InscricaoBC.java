@@ -9,16 +9,18 @@ import br.com.mauda.seminario.cientificos.model.enums.SituacaoInscricaoEnum;
 import java.time.LocalDate;
 
 public class InscricaoBC extends PatternCrudBC<Inscricao> {
-    public static InscricaoBC getInstance() {
-        return new InscricaoBC();
-    }
+    public static InscricaoBC getInstance() {return instance;}
+
+    private static final InscricaoBC instance = new InscricaoBC();
+
+    private InscricaoBC() {}
 
     public static void comprar(Inscricao inscricao, Estudante estudante, Boolean direitoMaretial) {
         if (inscricao == null ||estudante == null ||direitoMaretial == null) {
             throw new ObjetoNuloException();
         }
         String error = null;
-        if (inscricao.getSituacao() != SituacaoInscricaoEnum.DISPONIVEL) {
+        if (!SituacaoInscricaoEnum.DISPONIVEL.equals(inscricao.getSituacao())) {
             error = "ER0042";
         }
         if (LocalDate.now().isAfter(inscricao.getSeminario().getData())) {
@@ -36,7 +38,7 @@ public class InscricaoBC extends PatternCrudBC<Inscricao> {
             throw new ObjetoNuloException();
         }
         String error = null;
-        if (inscricao.getSituacao() != SituacaoInscricaoEnum.COMPRADO) {
+        if (!SituacaoInscricaoEnum.COMPRADO.equals(inscricao.getSituacao())) {
             error = "ER0044";
         }
         if (LocalDate.now().isAfter(inscricao.getSeminario().getData())) {
@@ -53,7 +55,7 @@ public class InscricaoBC extends PatternCrudBC<Inscricao> {
             throw new ObjetoNuloException();
         }
         String error = null;
-        if (inscricao.getSituacao() != SituacaoInscricaoEnum.COMPRADO) {
+        if (!SituacaoInscricaoEnum.COMPRADO.equals(inscricao.getSituacao())) {
             error = "ER0046";
         }
         if (LocalDate.now().isAfter(inscricao.getSeminario().getData())) {
