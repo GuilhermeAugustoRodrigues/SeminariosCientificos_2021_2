@@ -1,6 +1,7 @@
 package br.com.mauda.seminario.cientificos.junit.tests;
 
 import static br.com.mauda.seminario.cientificos.junit.util.AssertionsMauda.assertAll;
+import static br.com.mauda.seminario.cientificos.junit.util.AssertionsMauda.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,8 +38,19 @@ class TesteInstituicao {
     @ParameterizedTest(name = "Criacao da Instituicao [{arguments}]")
     @EnumSource(MassaInstituicao.class)
     void criar(@ConvertWith(InstituicaoConverter.class) Instituicao object) {
-        // Verifica se os atributos estao preenchidos corretamente
+        // Cria o objeto
         assertAll(new InstituicaoExecutable(object));
+
+        // Realiza o insert no banco de dados atraves da Business Controller
         TesteInstituicao.bc.insert(object);
+
+        // Verifica se o id eh maior que zero, indicando que foi inserido no banco
+        assertTrue(object.getId() > 0, "Insert nao foi realizado corretamente pois o ID do objeto nao foi gerado");
+
+        // Obtem uma nova instancia do BD a partir do ID gerado
+        Instituicao objectBD = TesteInstituicao.bc.findById(object.getId());
+
+        // Realiza as verificacoes entre o objeto em memoria e o obtido do banco
+        assertAll(new InstituicaoExecutable(object, objectBD));
     }
 }

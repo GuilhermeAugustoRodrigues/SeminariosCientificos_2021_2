@@ -13,7 +13,7 @@ import br.com.mauda.seminario.cientificos.model.Professor;
 
 public class ProfessorExecutable implements Executable {
 
-    private Professor professor;
+    private Professor professor, professorBD;
     private MassaProfessor professorEnum;
 
     public ProfessorExecutable(Professor professor) {
@@ -23,6 +23,11 @@ public class ProfessorExecutable implements Executable {
     public ProfessorExecutable(Professor professor, MassaProfessor enumm) {
         this(professor);
         this.professorEnum = enumm;
+    }
+
+    public ProfessorExecutable(Professor professor, Professor professorBD) {
+        this(professor);
+        this.professorBD = professorBD;
     }
 
     public void basicVerification(Professor professor) throws Throwable {
@@ -52,6 +57,17 @@ public class ProfessorExecutable implements Executable {
 
             assertAll(new InstituicaoExecutable(this.professor.getInstituicao(), this.professorEnum.getInstituicao()));
             return;
+        }
+
+        if (this.professorBD != null) {
+            this.basicVerification(this.professorBD);
+            assertEquals(this.professorBD.getEmail(), this.professor.getEmail(), "Emails dos professores nao sao iguais");
+            assertEquals(this.professorBD.getId(), this.professor.getId(), "Ids dos professores nao sao iguais");
+            assertEquals(this.professorBD.getNome(), this.professor.getNome(), "Nomes dos professores nao sao iguais");
+            assertEquals(this.professorBD.getTelefone(), this.professor.getTelefone(), "Telefones dos professores nao sao iguais");
+            assertEquals(this.professorBD.getSalario(), this.professor.getSalario(), "Salario dos professores nao sao iguais");
+
+            assertAll(new InstituicaoExecutable(this.professor.getInstituicao(), this.professor.getInstituicao()));
         }
     }
 }
