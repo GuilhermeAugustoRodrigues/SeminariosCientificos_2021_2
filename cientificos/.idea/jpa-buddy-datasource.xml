@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpbDataSourceConfig">
+    <data-sources>
+      <data-source id="821a3bad-ad34-4a5f-8259-b1a4fb24a956" name="testedb" url="jdbc:hsqldb:mem:testedb" driverClass="org.hsqldb.jdbc.JDBCDriver" />
+    </data-sources>
+  </component>
+</project>

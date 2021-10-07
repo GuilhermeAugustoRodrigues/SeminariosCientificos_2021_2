@@ -4,25 +4,51 @@ import br.com.mauda.seminario.cientificos.exception.ObjetoNuloException;
 import br.com.mauda.seminario.cientificos.model.enums.SituacaoInscricaoEnum;
 import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "TB_INSCRICAO")
 public class Inscricao implements DataValidation {
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "DIREITO_MATERIAL")
     private Boolean direitoMaterial;
-    private final LocalDateTime dataCriacao;
+
+    @Column(name = "DATA_HORA_CRIACAO")
+    private LocalDateTime dataCriacao;
+
+    @Column(name = "DATA_HORA_COMPRA")
     private LocalDateTime dataCompra;
+
+    @Column(name = "DATA_HORA_CHECK_IN")
     private LocalDateTime dataCheckIn;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_ESTUDANTE")
     private Estudante estudante;
+
+    @Column(columnDefinition = "VARCHAR(10)")
     private SituacaoInscricaoEnum situacao;
-    private final Seminario seminario;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_SEMINARIO")
+    private Seminario seminario;
+
+    public void setSeminario(Seminario seminario) {
+        this.seminario = seminario;
+    }
 
     public Inscricao(Seminario seminario) {
         this.seminario = seminario;
         dataCriacao = LocalDateTime.now();
         situacao = SituacaoInscricaoEnum.DISPONIVEL;
     }
+    private Inscricao() {}
 
     public void comprar(Estudante estudante, boolean direitoMaterial) {
         this.estudante = estudante;

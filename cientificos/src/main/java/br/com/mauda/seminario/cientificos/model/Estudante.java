@@ -6,22 +6,34 @@ import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
 import br.com.mauda.seminario.cientificos.util.ListUtils;
 import br.com.mauda.seminario.cientificos.util.StringUtils;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "TB_ESTUDANTE")
 public class Estudante implements DataValidation {
     private static final long serialVersionUID = 4L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String telefone;
     private String email;
+
+    @OneToMany(mappedBy = "estudante")
     private final List<Inscricao> inscricoes = new ArrayList<>();
-    private final Instituicao instituicao;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_INSTITUICAO")
+    private Instituicao instituicao;
 
     public Estudante(Instituicao instituicao) {
         this.instituicao = instituicao;
     }
+
+    public Estudante() {}
 
     public void adicionarInscricao(Inscricao inscricao) {
         inscricoes.add(inscricao);

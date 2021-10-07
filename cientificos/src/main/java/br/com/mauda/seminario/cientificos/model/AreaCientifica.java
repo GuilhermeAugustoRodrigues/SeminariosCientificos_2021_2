@@ -6,14 +6,21 @@ import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
 import br.com.mauda.seminario.cientificos.util.ListUtils;
 import br.com.mauda.seminario.cientificos.util.StringUtils;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "TB_AREA_CIENTIFICA")
 public class AreaCientifica implements DataValidation {
     private static final long serialVersionUID = 6L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+
+    @OneToMany(mappedBy = "areaCientifica")
     private final List<Curso> cursos = new ArrayList<>();
 
     public void adicionarCurso(Curso curso) {

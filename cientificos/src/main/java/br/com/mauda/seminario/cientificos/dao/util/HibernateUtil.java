@@ -35,7 +35,6 @@ public class HibernateUtil {
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
 
             } catch (Exception e) {
-                e.printStackTrace();
                 shutdown();
             }
         }
