@@ -22,5 +22,7 @@
 	<mapping class="br.com.mauda.seminario.cientificos.model.Professor"/>
 	<mapping class="br.com.mauda.seminario.cientificos.model.Seminario"/>
 	<mapping class="br.com.mauda.seminario.cientificos.model.Instituicao"/>
+	<mapping class="br.com.mauda.seminario.cientificos.model.Professor"/>
+	<mapping class="br.com.mauda.seminario.cientificos.model.Seminario"/>
 </session-factory>
 </hibernate-configuration>
