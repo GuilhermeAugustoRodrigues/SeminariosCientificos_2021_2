@@ -4,9 +4,15 @@ import br.com.mauda.seminario.cientificos.exception.SeminariosCientificosExcepti
 import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
 import br.com.mauda.seminario.cientificos.util.StringUtils;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "TB_INSTITUICAO")
 public class Instituicao implements DataValidation {
     private static final long serialVersionUID = 3L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String sigla;

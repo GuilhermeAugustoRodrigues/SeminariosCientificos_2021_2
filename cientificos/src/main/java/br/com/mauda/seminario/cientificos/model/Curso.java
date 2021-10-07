@@ -5,17 +5,29 @@ import br.com.mauda.seminario.cientificos.exception.SeminariosCientificosExcepti
 import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
 import br.com.mauda.seminario.cientificos.util.StringUtils;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "TB_CURSO")
 public class Curso implements DataValidation {
     private static final long serialVersionUID = 5L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private final AreaCientifica areaCientifica;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_AREA_CIENTIFICA")
+    private AreaCientifica areaCientifica;
+
 
     public Curso(AreaCientifica areaCientifica) {
         areaCientifica.adicionarCurso(this);
         this.areaCientifica = areaCientifica;
     }
+
+    public Curso() {}
 
     public Long getId() {
         return id;
@@ -35,6 +47,10 @@ public class Curso implements DataValidation {
 
     public AreaCientifica getAreaCientifica() {
         return areaCientifica;
+    }
+
+    public void setAreaCientifica(AreaCientifica areaCientifica) {
+        this.areaCientifica = areaCientifica;
     }
 
     @Override

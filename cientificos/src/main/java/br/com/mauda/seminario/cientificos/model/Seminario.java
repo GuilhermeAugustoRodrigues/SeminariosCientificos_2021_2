@@ -5,23 +5,50 @@ import br.com.mauda.seminario.cientificos.exception.SeminariosCientificosExcepti
 import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
 import br.com.mauda.seminario.cientificos.util.ListUtils;
 import br.com.mauda.seminario.cientificos.util.StringUtils;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "TB_SEMINARIO")
 public class Seminario implements DataValidation {
     private static final long serialVersionUID = 7L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
     private String descricao;
+
+    @Column(name = "MESA_REDONDA")
     private Boolean mesaRedonda;
     private LocalDate data;
+
+
+    @Column(name = "QTD_INSCRICOES")
     private Integer qtdInscricoes;
-    private final List<AreaCientifica> areasCientificas = new ArrayList<>();
-    private final List<Inscricao> inscricoes = new ArrayList<>();
-    private final List<Professor> professores = new ArrayList<>();
+
+    @OneToMany
+    @JoinTable(name = "TB_SEMINARIO_AREA_CIENTIFICA",
+            joinColumns = @JoinColumn(name = "ID_SEMINARIO"),
+            inverseJoinColumns = @JoinColumn(name = "ID_AREA_CIENTIFICA"))
+    private List<AreaCientifica> areasCientificas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "seminario")
+    @Cascade(CascadeType.ALL)
+    private List<Inscricao> inscricoes = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "TB_PROFESSOR_SEMINARIO",
+            joinColumns = @JoinColumn(name = "ID_SEMINARIO"),
+            inverseJoinColumns = @JoinColumn(name = "ID_PROFESSOR"))
+    private List<Professor> professores = new ArrayList<>();
+
+
 
     public Seminario(AreaCientifica areaCientifica, Professor professor, Integer qtdInscricoes) {
         this.qtdInscricoes = qtdInscricoes;
@@ -30,6 +57,8 @@ public class Seminario implements DataValidation {
         professores.add(professor);
         createIncricoes();
     }
+
+    private Seminario() {}
 
     private void createIncricoes() {
         for (int i = 0; i < qtdInscricoes; i++) {
@@ -151,6 +180,11 @@ public class Seminario implements DataValidation {
 
     @Override
     public void validateForDataModification() {
+        validateFields();
+        validateLists();
+    }
+
+    private void validateFields() {
         String errorMessage = null;
         if (data == null || data.isBefore(LocalDate.now())) {
             errorMessage = "ER0070";
@@ -176,13 +210,10 @@ public class Seminario implements DataValidation {
         if (errorMessage != null) {
             throw new SeminariosCientificosException(errorMessage);
         }
-        if (!ListUtils.isValidList(inscricoes, true)) {
-            throw new ObjetoNuloException();
-        }
-        if (!ListUtils.isValidList(professores, true)) {
-            throw new ObjetoNuloException();
-        }
-        if (!ListUtils.isValidList(areasCientificas, true)) {
+    }
+
+    private void validateLists() {
+        if (!ListUtils.isValidList(inscricoes, true) || !ListUtils.isValidList(professores, true) || !ListUtils.isValidList(areasCientificas, true)) {
             throw new ObjetoNuloException();
         }
     }
