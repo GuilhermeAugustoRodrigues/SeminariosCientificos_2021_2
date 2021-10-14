@@ -27,7 +27,7 @@ public class Curso implements DataValidation {
         this.areaCientifica = areaCientifica;
     }
 
-    public Curso() {}
+    private Curso() {}
 
     public Long getId() {
         return id;
@@ -49,7 +49,7 @@ public class Curso implements DataValidation {
         return areaCientifica;
     }
 
-    public void setAreaCientifica(AreaCientifica areaCientifica) {
+    private void setAreaCientifica(AreaCientifica areaCientifica) {
         this.areaCientifica = areaCientifica;
     }
 

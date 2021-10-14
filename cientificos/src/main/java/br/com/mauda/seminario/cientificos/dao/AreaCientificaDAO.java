@@ -14,5 +14,7 @@ public class AreaCientificaDAO extends PatternCrudDAO<AreaCientifica> {
     }
 
     @Override
-    public void inicializaLazyObjects(AreaCientifica object) {}
+    public void inicializaLazyObjects(AreaCientifica object) {
+        //NOTHING TO DO
+    }
 }

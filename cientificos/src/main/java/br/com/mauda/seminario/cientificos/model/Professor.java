@@ -27,13 +27,10 @@ public class Professor implements DataValidation {
     @JoinColumn(name = "ID_INSTITUICAO")
     private Instituicao instituicao;
 
-    @ManyToMany
-    @JoinTable(name = "TB_PROFESSOR_SEMINARIO",
-            joinColumns = @JoinColumn(name = "ID_PROFESSOR"),
-            inverseJoinColumns = @JoinColumn(name = "ID_SEMINARIO"))
+    @ManyToMany(mappedBy = "professores")
     private List<Seminario> seminarios = new ArrayList<>();
 
-    protected Professor() {}
+    private Professor() {}
 
     public Professor(Instituicao instituicao) {
         this.instituicao = instituicao;

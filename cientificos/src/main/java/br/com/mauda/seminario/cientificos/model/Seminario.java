@@ -28,7 +28,6 @@ public class Seminario implements DataValidation {
     private Boolean mesaRedonda;
     private LocalDate data;
 
-
     @Column(name = "QTD_INSCRICOES")
     private Integer qtdInscricoes;
 
@@ -36,19 +35,17 @@ public class Seminario implements DataValidation {
     @JoinTable(name = "TB_SEMINARIO_AREA_CIENTIFICA",
             joinColumns = @JoinColumn(name = "ID_SEMINARIO"),
             inverseJoinColumns = @JoinColumn(name = "ID_AREA_CIENTIFICA"))
-    private List<AreaCientifica> areasCientificas = new ArrayList<>();
+    private final List<AreaCientifica> areasCientificas = new ArrayList<>();
 
     @OneToMany(mappedBy = "seminario")
     @Cascade(CascadeType.ALL)
-    private List<Inscricao> inscricoes = new ArrayList<>();
+    private final List<Inscricao> inscricoes = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "TB_PROFESSOR_SEMINARIO",
             joinColumns = @JoinColumn(name = "ID_SEMINARIO"),
             inverseJoinColumns = @JoinColumn(name = "ID_PROFESSOR"))
     private List<Professor> professores = new ArrayList<>();
-
-
 
     public Seminario(AreaCientifica areaCientifica, Professor professor, Integer qtdInscricoes) {
         this.qtdInscricoes = qtdInscricoes;
