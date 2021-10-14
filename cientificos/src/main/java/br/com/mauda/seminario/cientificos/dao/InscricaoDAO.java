@@ -14,5 +14,7 @@ public class InscricaoDAO extends PatternCrudDAO<Inscricao> {
     }
 
     @Override
-    public void inicializaLazyObjects(Inscricao object) {}
+    public void inicializaLazyObjects(Inscricao object) {
+        //NOTHING TO DO
+    }
 }

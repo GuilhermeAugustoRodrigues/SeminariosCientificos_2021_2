@@ -33,7 +33,7 @@ public class Estudante implements DataValidation {
         this.instituicao = instituicao;
     }
 
-    public Estudante() {}
+    private Estudante() {}
 
     public void adicionarInscricao(Inscricao inscricao) {
         inscricoes.add(inscricao);
