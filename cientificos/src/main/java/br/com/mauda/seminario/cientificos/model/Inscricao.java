@@ -6,6 +6,7 @@ import br.com.mauda.seminario.cientificos.model.interfaces.DataValidation;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "TB_INSCRICAO")
@@ -38,10 +39,6 @@ public class Inscricao implements DataValidation {
     @ManyToOne
     @JoinColumn(name = "ID_SEMINARIO")
     private Seminario seminario;
-
-    public void setSeminario(Seminario seminario) {
-        this.seminario = seminario;
-    }
 
     public Inscricao(Seminario seminario) {
         this.seminario = seminario;
@@ -109,10 +106,7 @@ public class Inscricao implements DataValidation {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
-        return result;
+        return Objects.hashCode(this.id);
     }
 
     @Override

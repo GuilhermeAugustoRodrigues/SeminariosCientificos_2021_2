@@ -11,6 +11,7 @@ import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import br.com.mauda.seminario.cientificos.bc.InscricaoBC;
+import br.com.mauda.seminario.cientificos.junit.converter.dao.AcaoInscricaoDTODAOConverter;
 import br.com.mauda.seminario.cientificos.junit.converter.dto.AcaoInscricaoDTOConverter;
 import br.com.mauda.seminario.cientificos.junit.dto.AcaoInscricaoDTO;
 import br.com.mauda.seminario.cientificos.junit.executable.InscricaoExecutable;
@@ -40,31 +41,23 @@ class TesteAcaoCheckInSobreInscricao {
     @DisplayName("CheckIn de uma inscricao para o Seminario")
     @ParameterizedTest(name = "CheckIn da inscricao [{arguments}] para o Seminario")
     @EnumSource(MassaInscricaoCheckIn.class)
-    void checkInscricao(@ConvertWith(AcaoInscricaoDTOConverter.class) AcaoInscricaoDTO object) {
+    void checkInscricao(@ConvertWith(AcaoInscricaoDTODAOConverter.class) AcaoInscricaoDTO object) {
         Inscricao inscricao = object.getInscricao();
-
-        // Compra a inscricao pro seminario
-        TesteAcaoCheckInSobreInscricao.bc.comprar(inscricao, object.getEstudante(), object.getDireitoMaterial());
-
-        this.validarCompra(inscricao);
 
         // Realiza o check in da inscricao pro seminario
         TesteAcaoCheckInSobreInscricao.bc.realizarCheckIn(inscricao);
 
-        // Verifica se os atributos estao preenchidos
-        assertAll(new InscricaoExecutable(inscricao));
-
         // Verifica se a situacao da inscricao ficou como comprado
         assertEquals(inscricao.getSituacao(), SituacaoInscricaoEnum.CHECKIN,
             "Situacao da inscricao nao eh checkIn - trocar a situacao no metodo realizarCheckIn()");
-    }
 
-    private void validarCompra(Inscricao inscricao) {
         // Verifica se os atributos estao preenchidos
         assertAll(new InscricaoExecutable(inscricao));
 
-        // Verifica se a situacao da inscricao ficou como comprado
-        assertEquals(inscricao.getSituacao(), SituacaoInscricaoEnum.COMPRADO,
-            "Situacao da inscricao nao eh comprado - trocar a situacao no metodo comprar()");
+        // Obtem uma nova instancia do BD a partir do ID gerado
+        Inscricao objectBD = TesteAcaoCheckInSobreInscricao.bc.findById(inscricao.getId());
+
+        // Realiza as verificacoes entre o objeto em memoria e o obtido do banco
+        assertAll(new InscricaoExecutable(inscricao, objectBD));
     }
 }

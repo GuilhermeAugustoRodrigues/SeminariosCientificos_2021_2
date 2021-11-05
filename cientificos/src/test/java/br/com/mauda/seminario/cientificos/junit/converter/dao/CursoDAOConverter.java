@@ -1,39 +1,44 @@
 package br.com.mauda.seminario.cientificos.junit.converter.dao;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
+import java.util.Collection;
+
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.ArgumentConverter;
+import org.junit.platform.commons.util.Preconditions;
 
-import br.com.mauda.seminario.cientificos.junit.converter.AreaCientificaConverter;
+import br.com.mauda.seminario.cientificos.bc.AreaCientificaBC;
+import br.com.mauda.seminario.cientificos.dto.AreaCientificaDTO;
 import br.com.mauda.seminario.cientificos.junit.converter.CursoConverter;
 import br.com.mauda.seminario.cientificos.junit.massa.MassaCurso;
-import br.com.mauda.seminario.cientificos.junit.util.AssertionsMauda;
 import br.com.mauda.seminario.cientificos.model.AreaCientifica;
 import br.com.mauda.seminario.cientificos.model.Curso;
 
 public class CursoDAOConverter implements ArgumentConverter {
 
+    protected static AreaCientificaBC areaCientificaBC = AreaCientificaBC.getInstance();
     protected CursoConverter converter = new CursoConverter();
-    protected AreaCientificaConverter areaConverter = new AreaCientificaConverter();
 
     @Override
     public Object convert(Object input, ParameterContext parameterContext) throws ArgumentConversionException {
         if (input instanceof MassaCurso) {
             MassaCurso massaCurso = (MassaCurso) input;
 
-            // Cria uma Area Cientifica temporaria com ID para facilitar o mapeamento
-            AreaCientifica areaCientifica = this.areaConverter.create(massaCurso.getAreaCientifica());
+            // Inicializa o filtro com o nome da area cientifica para pesquisar no banco de dados
+            AreaCientificaDTO filtro = new AreaCientificaDTO();
+            filtro.setNome(massaCurso.getAreaCientifica().getNome());
 
-            // Metodo que seta o id da area cientifica usando reflections
-            try {
-                FieldUtils.writeDeclaredField(areaCientifica, "id", massaCurso.getAreaCientifica().getId(), true);
-            } catch (IllegalAccessException e) {
-                AssertionsMauda.fail("Erro na hora de atribuir o ID a area cientifica");
-            }
+            // Obtem a area cientifica do banco de dados
+            Collection<AreaCientifica> areas = CursoDAOConverter.areaCientificaBC.findByFilter(filtro);
 
-            // Cria um curso com a Area Cientifica
-            Curso curso = new Curso(areaCientifica);
+            // Verifica se a lista contem elementos
+            Preconditions.notNull(areas, "O retorno do metodo findByFilter nao pode ser nulo");
+            Preconditions.notEmpty(areas, "O retorno do metodo findByFilter deve conter algum elemento");
+            Preconditions.condition(areas.size() == 1,
+                "Lista contem mais de uma area cientifica. Favor deletar as areas cientificas duplicadas do banco de dados");
+
+            // Obtem a primeira posicao da Collection
+            Curso curso = new Curso(areas.iterator().next());
 
             // Atualiza as informacoes de acordo com o enum
             this.converter.update(curso, massaCurso);

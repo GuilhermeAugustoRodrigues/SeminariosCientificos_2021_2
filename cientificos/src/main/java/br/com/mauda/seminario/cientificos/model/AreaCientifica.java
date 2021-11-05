@@ -9,6 +9,7 @@ import br.com.mauda.seminario.cientificos.util.StringUtils;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "TB_AREA_CIENTIFICA")
@@ -53,27 +54,12 @@ public class AreaCientifica implements DataValidation {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
-        return result;
+        return Objects.hashCode(this.id);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        AreaCientifica other = (AreaCientifica) obj;
-        if (this.id == null) {
-            return other.id == null;
-        } else return this.id.equals(other.id);
+        return Objects.deepEquals(this, obj);
     }
 
     @Override

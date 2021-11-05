@@ -59,11 +59,11 @@ class TestesValidacaoAcaoCancelarCompraInscricao {
 
     @Test
     @DisplayName("Cancelar compra após a data do Seminario")
-    void validarCancelamentoAposDataSeminario() {
+    void validarCancelamentoAposDataSeminario() throws IllegalAccessException {
         Inscricao inscricao = this.acaoInscricaoDTO.getInscricao();
 
-        TestesValidacaoAcaoCancelarCompraInscricao.bc.comprar(inscricao, this.acaoInscricaoDTO.getEstudante(),
-            this.acaoInscricaoDTO.getDireitoMaterial());
+        // Metodo que seta a situacao da inscricao como COMPRADO usando reflections
+        FieldUtils.writeDeclaredField(inscricao, "situacao", SituacaoInscricaoEnum.COMPRADO, true);
 
         // Diminui a data do seminario em 30 dias
         this.acaoInscricaoDTO.getSeminario().setData(LocalDate.now().minusDays(30));

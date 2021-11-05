@@ -58,10 +58,11 @@ class TestesValidacaoAcaoCheckInInscricao {
 
     @Test
     @DisplayName("CheckIn de uma inscricao após a data do Seminario")
-    void validarCheckInAposDataSeminario() {
+    void validarCheckInAposDataSeminario() throws IllegalAccessException {
         Inscricao inscricao = this.acaoInscricaoDTO.getInscricao();
 
-        TestesValidacaoAcaoCheckInInscricao.bc.comprar(inscricao, this.acaoInscricaoDTO.getEstudante(), this.acaoInscricaoDTO.getDireitoMaterial());
+        // Metodo que seta a situacao da inscricao como COMPRADO usando reflections
+        FieldUtils.writeDeclaredField(inscricao, "situacao", SituacaoInscricaoEnum.COMPRADO, true);
 
         // Diminui a data do seminario em 30 dias
         this.acaoInscricaoDTO.getSeminario().setData(LocalDate.now().minusDays(30));

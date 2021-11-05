@@ -1,9 +1,10 @@
 package br.com.mauda.seminario.cientificos.bc;
 
 import br.com.mauda.seminario.cientificos.dao.EstudanteDAO;
+import br.com.mauda.seminario.cientificos.dto.EstudanteDTO;
 import br.com.mauda.seminario.cientificos.model.Estudante;
 
-public class EstudanteBC extends PatternCrudBC<Estudante, EstudanteDAO> {
+public class EstudanteBC extends PatternCrudBC<Estudante, EstudanteDTO, EstudanteDAO> {
     public static EstudanteBC getInstance() {
         return instance;
     }
