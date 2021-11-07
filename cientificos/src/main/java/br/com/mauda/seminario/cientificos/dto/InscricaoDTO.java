@@ -28,10 +28,6 @@ public class InscricaoDTO implements FilterValidation {
         this.id = id;
     }
 
-    public String getTitulo() {
-        return titulo;
-    }
-
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }

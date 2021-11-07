@@ -3,7 +3,6 @@ package br.com.mauda.seminario.cientificos.dao;
 import br.com.mauda.seminario.cientificos.dto.InscricaoDTO;
 import br.com.mauda.seminario.cientificos.dto.util.QueryExecutor;
 import br.com.mauda.seminario.cientificos.model.Inscricao;
-import br.com.mauda.seminario.cientificos.model.enums.SituacaoInscricaoEnum;
 import org.hibernate.Hibernate;
 
 import java.util.Collection;

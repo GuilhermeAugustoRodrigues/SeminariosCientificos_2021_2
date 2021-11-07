@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 public class ClassAttributeValidation {
+    private ClassAttributeValidation() {}
+
     public static boolean hasNonNullAttribute(Object object) {
         for (Field field : object.getClass().getDeclaredFields()) {
             field.setAccessible(true);

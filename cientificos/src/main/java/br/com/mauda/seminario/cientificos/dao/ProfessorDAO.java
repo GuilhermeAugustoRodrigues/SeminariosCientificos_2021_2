@@ -2,7 +2,6 @@ package br.com.mauda.seminario.cientificos.dao;
 
 import br.com.mauda.seminario.cientificos.dto.ProfessorDTO;
 import br.com.mauda.seminario.cientificos.dto.util.QueryExecutor;
-import br.com.mauda.seminario.cientificos.model.Estudante;
 import br.com.mauda.seminario.cientificos.model.Professor;
 import org.hibernate.Hibernate;
 

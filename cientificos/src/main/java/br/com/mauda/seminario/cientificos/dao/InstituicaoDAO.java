@@ -19,9 +19,6 @@ public class InstituicaoDAO extends PatternCrudDAO<Instituicao, InstituicaoDTO> 
 
     @Override
     public void inicializaLazyObjects(Instituicao object) {
-        if (object == null) {
-            return;
-        }
         //NOTHING TO DO
     }
 

@@ -19,9 +19,9 @@ public class QueryExecutor <T extends DataValidation, D extends PatternCrudDAO> 
     private List<String> fields = new ArrayList<>();
     private final Map<String, Object> filterEquals = new HashMap<>();
     private final Map<String, Object> filterOr = new HashMap<>();
-    private final Map<String, String> join = new HashMap<>();
-    private List<String> groupBy = new ArrayList<>();
-    private List<String> orderBy = new ArrayList<>();
+    private final Map<String, String> joins = new HashMap<>();
+    private List<String> groupBys = new ArrayList<>();
+    private List<String> orderBys = new ArrayList<>();
 
     public QueryExecutor(Class<T> entityClass, D crud) {
         this.entityClass = entityClass;
@@ -53,62 +53,62 @@ public class QueryExecutor <T extends DataValidation, D extends PatternCrudDAO> 
     }
 
     public QueryExecutor<T, D> join(String table, String condition) {
-        join.put(table, condition);
+        joins.put(table, condition);
         return this;
     }
 
     public QueryExecutor<T, D> join(String table) {
-        join.put(table, "");
+        joins.put(table, "");
         return this;
     }
 
     public QueryExecutor<T, D> groupBy(String ... fields) {
-        this.groupBy = Arrays.asList(fields);
+        this.groupBys = Arrays.asList(fields);
         return this;
     }
 
     public QueryExecutor<T, D> groupBy(Integer ... fields) {
-        this.groupBy = Arrays.stream(fields).map(String::valueOf).collect(Collectors.toList());
+        this.groupBys = Arrays.stream(fields).map(String::valueOf).collect(Collectors.toList());
         return this;
     }
 
     public QueryExecutor<T, D> orderBy(String ... fields) {
-        this.orderBy = Arrays.asList(fields);
+        this.orderBys = Arrays.asList(fields);
         return this;
     }
 
     public QueryExecutor<T, D> orderBy(Integer ... fields) {
-        this.orderBy = Arrays.stream(fields).map(String::valueOf).collect(Collectors.toList());
+        this.orderBys = Arrays.stream(fields).map(String::valueOf).collect(Collectors.toList());
         return this;
     }
 
     public Collection<T> queryUsingHQL() {
+        Collection<T> collection = new Stack<>();
         try (Session session = HibernateUtil.getSession()) {
             Query<T> query = session.createQuery(this.toString(), entityClass);
-            Collection<T> collection = query.list();
+            collection = query.list();
 
             for (T object : collection) {
                 crud.inicializaLazyObjects(object);
             }
             return collection;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return collection;
         }
     }
 
     public Collection<T> queryUsingCriteria() {
+        Collection<T> collection = new Stack<>();
         try (Session session = HibernateUtil.getSession()) {
             Criteria criteria = create(session);
-            List<T> collection = criteria.list();
+            collection = criteria.list();
 
-            for (Object object : collection) {
-                crud.inicializaLazyObjects((T) object);
+            for (T object : collection) {
+                crud.inicializaLazyObjects(object);
             }
             return collection;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return collection;
         }
     }
 
@@ -122,7 +122,7 @@ public class QueryExecutor <T extends DataValidation, D extends PatternCrudDAO> 
 
         query.append("\nfrom ").append(table);
 
-        for (Map.Entry<String, String> entry : join.entrySet()) {
+        for (Map.Entry<String, String> entry : joins.entrySet()) {
             String join;
             if (entry.getValue().equals("")) {
                 join = "\njoin " + entry.getKey();
@@ -143,27 +143,25 @@ public class QueryExecutor <T extends DataValidation, D extends PatternCrudDAO> 
                 .map(entry -> entry.getKey() + " = '" + entry.getValue() + "'")
                 .collect(Collectors.joining("\nand ")));
 
-        if (!groupBy.isEmpty()) {
-            String groupBy = "\ngroup by " + String.join(", ", this.groupBy);
+        if (!groupBys.isEmpty()) {
+            String groupBy = "\ngroup by " + String.join(", ", this.groupBys);
             query.append(groupBy);
         }
 
-        if (!orderBy.isEmpty()) {
-            String orderBy = "\norder by " + String.join(", ", this.orderBy);
+        if (!orderBys.isEmpty()) {
+            String orderBy = "\norder by " + String.join(", ", this.orderBys);
             query.append(orderBy);
         }
 
         return query.toString();
     }
 
-    private Criteria create(Session session) throws Exception {
+    private Criteria create(Session session) throws ClassNotFoundException {
         String classPath = "br.com.mauda.seminario.cientificos.model.";
         Criteria criteria = session.createCriteria(Class.forName(classPath + table), "t");
 
-        for (Map.Entry<String, String> entry : join.entrySet()) {
-            if (entry.getValue().equals("")) {
-                throw new Exception("Erro na criação da query");
-            } else {
+        for (Map.Entry<String, String> entry : joins.entrySet()) {
+            if (!entry.getValue().equals("")) {
                 criteria.createAlias("t." + entry.getKey(), entry.getValue());
             }
         }
