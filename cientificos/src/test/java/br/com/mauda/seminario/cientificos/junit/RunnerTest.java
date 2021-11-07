@@ -27,32 +27,41 @@ import br.com.mauda.seminario.cientificos.junit.util.ErrorTestManager;
 class RunnerTest {
 
     static final String TESTE_PACKAGE = "br.com.mauda.seminario.cientificos.junit.tests.";
+    static final String TESTE_QUERIES_PACKAGE = "br.com.mauda.seminario.cientificos.junit.tests.queries.";
     static final String TESTE_VALIDACOES_PACKAGE = "br.com.mauda.seminario.cientificos.junit.tests.validacao.";
 
     @Test
     void execucao() {
         LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
             .selectors(
-                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAreaCientifica"),
-                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteCurso"),
-                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteInstituicao"),
-                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteEstudante"),
-                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteProfessor"),
-                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteSeminario"),
-                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAcaoComprarSobreInscricao"),
-                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAcaoCancelarCompraSobreInscricao"),
-                DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAcaoCheckInSobreInscricao"),
+                    DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAreaCientifica"),
+                    DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteCurso"),
+                    DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteInstituicao"),
+                    DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteEstudante"),
+                    DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteProfessor"),
+                    DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteSeminario"),
+                    DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAcaoComprarSobreInscricao"),
+                    DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAcaoCancelarCompraSobreInscricao"),
+                    DiscoverySelectors.selectClass(TESTE_PACKAGE + "TesteAcaoCheckInSobreInscricao"),
 
-                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAreaCientifica"),
-                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoCurso"),
-                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoInstituicao"),
-                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoEstudante"),
-                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoProfessor"),
-                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoSeminario"),
-                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAcaoComprarInscricao"),
-                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAcaoCancelarCompraInscricao"),
-                DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAcaoCheckInInscricao"))
-            .build();
+                    DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAreaCientifica"),
+                    DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoCurso"),
+                    DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoInstituicao"),
+                    DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoEstudante"),
+                    DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoProfessor"),
+                    DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoSeminario"),
+                    DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAcaoComprarInscricao"),
+                    DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAcaoCancelarCompraInscricao"),
+                    DiscoverySelectors.selectClass(TESTE_VALIDACOES_PACKAGE + "TestesValidacaoAcaoCheckInInscricao"),
+
+                    DiscoverySelectors.selectClass(TESTE_QUERIES_PACKAGE + "TesteAreaCientificaQueries"),
+                    DiscoverySelectors.selectClass(TESTE_QUERIES_PACKAGE + "TesteCursoQueries"),
+                    DiscoverySelectors.selectClass(TESTE_QUERIES_PACKAGE + "TesteInstituicaoQueries"),
+                    DiscoverySelectors.selectClass(TESTE_QUERIES_PACKAGE + "TesteEstudanteQueries"),
+                    DiscoverySelectors.selectClass(TESTE_QUERIES_PACKAGE + "TesteProfessorQueries"),
+                    DiscoverySelectors.selectClass(TESTE_QUERIES_PACKAGE + "TesteSeminarioQueries"),
+                    DiscoverySelectors.selectClass(TESTE_QUERIES_PACKAGE + "TesteInscricaoQueries")
+            ).build();
         SummaryGeneratingListener listener = new SummaryGeneratingListener();
         Launcher launcher = LauncherFactory.create();
         launcher.registerTestExecutionListeners(listener);

@@ -1,6 +1,7 @@
 package br.com.mauda.seminario.cientificos.junit.tests;
 
 import static br.com.mauda.seminario.cientificos.junit.util.AssertionsMauda.assertAll;
+import static br.com.mauda.seminario.cientificos.junit.util.AssertionsMauda.assertNull;
 import static br.com.mauda.seminario.cientificos.junit.util.AssertionsMauda.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -53,5 +54,45 @@ class TesteSeminario {
 
         // Realiza as verificacoes entre o objeto em memoria e o obtido do banco
         assertAll(new SeminarioExecutable(object, objectBD));
+    }
+
+    @DisplayName("Atualizacao dos atributos de um Seminario")
+    @ParameterizedTest(name = "Atualizacao do Seminario [{arguments}]")
+    @EnumSource(MassaSeminario.class)
+    void atualizar(@ConvertWith(SeminarioDAOConverter.class) Seminario object) {
+        // Cria o objeto
+        this.criar(object);
+
+        // Atualiza as informacoes de um objeto
+        TesteSeminario.converter.update(object, EnumUtils.getInstanceRandomly(MassaSeminario.class));
+
+        // Realiza o update no banco de dados atraves da Business Controller
+        TesteSeminario.bc.update(object);
+
+        // Obtem uma nova instancia do BD a partir do ID gerado
+        Seminario objectBD = TesteSeminario.bc.findById(object.getId());
+
+        // Realiza as verificacoes entre o objeto em memoria e o obtido do banco
+        assertAll(new SeminarioExecutable(object, objectBD));
+
+        // Realiza o delete no banco de dados atraves da Business Controller para nao deixar o registro
+        TesteSeminario.bc.delete(object);
+    }
+
+    @DisplayName("Delecao de um Seminario")
+    @ParameterizedTest(name = "Delecao do Seminario [{arguments}]")
+    @EnumSource(MassaSeminario.class)
+    void deletar(@ConvertWith(SeminarioDAOConverter.class) Seminario object) {
+        // Realiza a insercao do objeto no banco de dados
+        this.criar(object);
+
+        // Remove o objeto do BD
+        TesteSeminario.bc.delete(object);
+
+        // Obtem o objeto do BD a partir do ID do objeto
+        Seminario objectBD = TesteSeminario.bc.findById(object.getId());
+
+        // Verifica se o objeto deixou de existir no BD
+        assertNull(objectBD, "O objeto deveria estar deletado do banco de dados");
     }
 }

@@ -1,6 +1,7 @@
 package br.com.mauda.seminario.cientificos.bc;
 
 import br.com.mauda.seminario.cientificos.dao.InscricaoDAO;
+import br.com.mauda.seminario.cientificos.dto.InscricaoDTO;
 import br.com.mauda.seminario.cientificos.exception.ObjetoNuloException;
 import br.com.mauda.seminario.cientificos.exception.SeminariosCientificosException;
 import br.com.mauda.seminario.cientificos.model.Estudante;
@@ -9,7 +10,7 @@ import br.com.mauda.seminario.cientificos.model.enums.SituacaoInscricaoEnum;
 
 import java.time.LocalDate;
 
-public class InscricaoBC extends PatternCrudBC<Inscricao, InscricaoDAO> {
+public class InscricaoBC extends PatternCrudBC<Inscricao, InscricaoDTO, InscricaoDAO> {
     public static InscricaoBC getInstance() {return instance;}
 
     private static final InscricaoBC instance = new InscricaoBC();
@@ -18,8 +19,8 @@ public class InscricaoBC extends PatternCrudBC<Inscricao, InscricaoDAO> {
         this.dao = InscricaoDAO.getInstance();
     }
 
-    public static void comprar(Inscricao inscricao, Estudante estudante, Boolean direitoMaretial) {
-        if (inscricao == null ||estudante == null ||direitoMaretial == null) {
+    public void comprar(Inscricao inscricao, Estudante estudante, Boolean direitoMaterial) {
+        if (inscricao == null ||estudante == null ||direitoMaterial == null) {
             throw new ObjetoNuloException();
         }
         String error = null;
@@ -33,10 +34,12 @@ public class InscricaoBC extends PatternCrudBC<Inscricao, InscricaoDAO> {
             throw new SeminariosCientificosException(error);
         }
         estudante.validateForDataModification();
-        inscricao.comprar(estudante, direitoMaretial);
+        inscricao.comprar(estudante, direitoMaterial);
+
+        this.update(inscricao);
     }
 
-    public static void cancelarCompra(Inscricao inscricao) {
+    public void cancelarCompra(Inscricao inscricao) {
         if (inscricao == null) {
             throw new ObjetoNuloException();
         }
@@ -51,9 +54,11 @@ public class InscricaoBC extends PatternCrudBC<Inscricao, InscricaoDAO> {
             throw new SeminariosCientificosException(error);
         }
         inscricao.cancelarCompra();
+
+        this.update(inscricao);
     }
 
-    public static void realizarCheckIn(Inscricao inscricao) {
+    public void realizarCheckIn(Inscricao inscricao) {
         if (inscricao == null) {
             throw new ObjetoNuloException();
         }
@@ -68,5 +73,7 @@ public class InscricaoBC extends PatternCrudBC<Inscricao, InscricaoDAO> {
             throw new SeminariosCientificosException(error);
         }
         inscricao.realizarCheckIn();
+
+        this.update(inscricao);
     }
 }

@@ -1,6 +1,7 @@
 package br.com.mauda.seminario.cientificos.junit.tests;
 
 import static br.com.mauda.seminario.cientificos.junit.util.AssertionsMauda.assertAll;
+import static br.com.mauda.seminario.cientificos.junit.util.AssertionsMauda.assertNull;
 import static br.com.mauda.seminario.cientificos.junit.util.AssertionsMauda.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -52,5 +53,45 @@ class TesteInstituicao {
 
         // Realiza as verificacoes entre o objeto em memoria e o obtido do banco
         assertAll(new InstituicaoExecutable(object, objectBD));
+    }
+
+    @DisplayName("Atualizacao dos atributos de uma Instituicao")
+    @ParameterizedTest(name = "Atualizacao da Instituicao [{arguments}]")
+    @EnumSource(MassaInstituicao.class)
+    void atualizar(@ConvertWith(InstituicaoConverter.class) Instituicao object) {
+        // Cria o objeto
+        this.criar(object);
+
+        // Atualiza as informacoes de um objeto
+        TesteInstituicao.converter.update(object, EnumUtils.getInstanceRandomly(MassaInstituicao.class));
+
+        // Realiza o update no banco de dados atraves da Business Controller
+        TesteInstituicao.bc.update(object);
+
+        // Obtem uma nova instancia do BD a partir do ID gerado
+        Instituicao objectBD = TesteInstituicao.bc.findById(object.getId());
+
+        // Realiza as verificacoes entre o objeto em memoria e o obtido do banco
+        assertAll(new InstituicaoExecutable(object, objectBD));
+
+        // Realiza o delete no banco de dados atraves da Business Controller para nao deixar o registro
+        TesteInstituicao.bc.delete(object);
+    }
+
+    @DisplayName("Delecao de uma Instituicao")
+    @ParameterizedTest(name = "Delecao da Instituicao [{arguments}]")
+    @EnumSource(MassaInstituicao.class)
+    void deletar(@ConvertWith(InstituicaoConverter.class) Instituicao object) {
+        // Realiza a insercao do objeto no banco de dados
+        this.criar(object);
+
+        // Remove o objeto do BD
+        TesteInstituicao.bc.delete(object);
+
+        // Obtem o objeto do BD a partir do ID do objeto
+        Instituicao objectBD = TesteInstituicao.bc.findById(object.getId());
+
+        // Verifica se o objeto deixou de existir no BD
+        assertNull(objectBD, "O objeto deveria estar deletado do banco de dados");
     }
 }

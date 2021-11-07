@@ -9,6 +9,7 @@ import br.com.mauda.seminario.cientificos.util.StringUtils;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "TB_ESTUDANTE")
@@ -89,10 +90,7 @@ public class Estudante implements DataValidation {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
-        return result;
+        return Objects.hashCode(this.id);
     }
 
     @Override
