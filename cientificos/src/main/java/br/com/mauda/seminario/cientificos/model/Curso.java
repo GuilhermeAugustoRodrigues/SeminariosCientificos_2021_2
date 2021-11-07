@@ -50,13 +50,10 @@ public class Curso implements DataValidation {
         return areaCientifica;
     }
 
-<<<<<<< HEAD
-=======
     private void setAreaCientifica(AreaCientifica areaCientifica) {
         this.areaCientifica = areaCientifica;
     }
 
->>>>>>> 5df95157ec70f83f255ba27b478038cfd3e0e7fe
     @Override
     public int hashCode() {
         return Objects.hashCode(this.id);

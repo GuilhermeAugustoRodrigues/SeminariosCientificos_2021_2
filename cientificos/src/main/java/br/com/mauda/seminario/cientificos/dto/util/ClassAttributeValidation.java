@@ -5,10 +5,10 @@ import java.util.List;
 
 public class ClassAttributeValidation {
     private ClassAttributeValidation() {}
-
-    public static boolean hasNonNullAttribute(Object object) {
-        for (Field field : object.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
+    
+    public static boolean validateAllFields(Object object) {
+        Field[] fieldList = object.getClass().getDeclaredFields();
+        for (Field field : fieldList) {
             if (fieldIsNonNull(field, object)) {
                 return true;
             }
@@ -18,6 +18,7 @@ public class ClassAttributeValidation {
 
     private static boolean fieldIsNonNull(Field field, Object object) {
         try {
+            field.setAccessible(true);
             if (field.get(object) instanceof List) {
                 return field.get(object) != null && !((List<?>) field.get(object)).isEmpty();
             }

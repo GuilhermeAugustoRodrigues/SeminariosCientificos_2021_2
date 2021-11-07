@@ -45,7 +45,7 @@ public class QueryExecutor <T extends DataValidation, D extends PatternCrudDAO> 
         return this;
     }
 
-    public QueryExecutor<T, D> whereOr(String field, List<SituacaoInscricaoEnum> condition) {
+    public QueryExecutor<T, D> whereIn(String field, List<SituacaoInscricaoEnum> condition) {
         if (condition != null) {
             filterOr.put(field, condition);
         }
@@ -83,7 +83,7 @@ public class QueryExecutor <T extends DataValidation, D extends PatternCrudDAO> 
     }
 
     public Collection<T> queryUsingHQL() {
-        Collection<T> collection = new Stack<>();
+        List<T> collection = new ArrayList<>();
         try (Session session = HibernateUtil.getSession()) {
             Query<T> query = session.createQuery(this.toString(), entityClass);
             collection = query.list();
@@ -98,7 +98,7 @@ public class QueryExecutor <T extends DataValidation, D extends PatternCrudDAO> 
     }
 
     public Collection<T> queryUsingCriteria() {
-        Collection<T> collection = new Stack<>();
+        List<T> collection = new ArrayList<>();
         try (Session session = HibernateUtil.getSession()) {
             Criteria criteria = create(session);
             collection = criteria.list();

@@ -17,7 +17,7 @@ public class InscricaoDTO implements FilterValidation {
 
     @Override
     public boolean validateForFindData() {
-        return ClassAttributeValidation.hasNonNullAttribute(this);
+        return ClassAttributeValidation.validateAllFields(this);
     }
 
     public Long getId() {
@@ -28,7 +28,11 @@ public class InscricaoDTO implements FilterValidation {
         this.id = id;
     }
 
-    public void setTitulo(String titulo) {
+    public String getTituloSeminario() {
+        return titulo;
+    }
+
+    public void setTituloSeminario(String titulo) {
         this.titulo = titulo;
     }
 
@@ -62,9 +66,5 @@ public class InscricaoDTO implements FilterValidation {
 
     public void setSituacoes(List<SituacaoInscricaoEnum> situacoes) {
         this.situacoes = situacoes;
-    }
-
-    public void setTituloSeminario(String titulo) {
-        this.titulo = titulo;
     }
 }

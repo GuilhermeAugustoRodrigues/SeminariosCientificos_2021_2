@@ -24,10 +24,6 @@ public class EstudanteDAO extends PatternCrudDAO<Estudante, EstudanteDTO> {
             return;
         }
         Hibernate.initialize(object.getInscricoes());
-        object.getInscricoes().forEach(inscricao -> Hibernate.initialize(inscricao.getSeminario()));
-        object.getInscricoes().forEach(inscricao -> Hibernate.initialize(inscricao.getEstudante()));
-        object.getInscricoes().forEach(inscricao -> Hibernate.initialize(inscricao.getSituacao()));
-        Hibernate.initialize(object.getInstituicao());
     }
 
     @Override

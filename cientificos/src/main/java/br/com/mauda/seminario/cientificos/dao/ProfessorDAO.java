@@ -24,7 +24,6 @@ public class ProfessorDAO extends PatternCrudDAO<Professor, ProfessorDTO> {
             return;
         }
         Hibernate.initialize(object.getSeminarios());
-        Hibernate.initialize(object.getInstituicao());
     }
 
     @Override
@@ -45,18 +44,19 @@ public class ProfessorDAO extends PatternCrudDAO<Professor, ProfessorDTO> {
         if (filter.getSalario() != null) {
             query.whereEquals("salario", filter.getSalario());
         }
+        query.join("instituicao", "i");
         if (filter.getNomeInstituicao() != null) {
-            query.whereEquals("instituicao.nome", filter.getNomeInstituicao());
+            query.whereEquals("i.nome", filter.getNomeInstituicao());
         }
         if (filter.getPais() != null) {
-            query.whereEquals("instituicao.pais", filter.getPais());
+            query.whereEquals("i.pais", filter.getPais());
         }
         if (filter.getEstado() != null) {
-            query.whereEquals("instituicao.estado", filter.getEstado());
+            query.whereEquals("i.estado", filter.getEstado());
         }
         if (filter.getCidade() != null) {
-            query.whereEquals("instituicao.cidade", filter.getCidade());
+            query.whereEquals("i.cidade", filter.getCidade());
         }
-        return query.queryUsingHQL();
+        return query.queryUsingCriteria();
     }
 }

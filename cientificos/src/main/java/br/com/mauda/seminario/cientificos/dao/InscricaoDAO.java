@@ -23,7 +23,6 @@ public class InscricaoDAO extends PatternCrudDAO<Inscricao, InscricaoDTO> {
         if (object == null) {
             return;
         }
-        Hibernate.initialize(object.getSituacao());
         if (object.getEstudante() != null) {
             Hibernate.initialize(object.getEstudante().getInscricoes());
         }
@@ -44,14 +43,14 @@ public class InscricaoDAO extends PatternCrudDAO<Inscricao, InscricaoDTO> {
             query.whereEquals("id", filter.getId());
         }
         if (filter.getSituacoes() != null && !filter.getSituacoes().isEmpty()) {
-            query.whereOr("situacao", filter.getSituacoes());
+            query.whereIn("situacao", filter.getSituacoes());
         }
         if (filter.getDireitoMaterial() != null) {
             query.whereEquals("direitoMaterial", filter.getDireitoMaterial());
         }
         query.join("seminario", "s");
-        if (filter.getTitulo() != null) {
-            query.whereEquals("s.titulo", filter.getTitulo());
+        if (filter.getTituloSeminario() != null) {
+            query.whereEquals("s.titulo", filter.getTituloSeminario());
         }
         if (filter.getDataSeminario() != null) {
             query.whereEquals("s.data", filter.getDataSeminario());

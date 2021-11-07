@@ -15,7 +15,7 @@ public class SeminarioDTO implements FilterValidation {
 
     @Override
     public boolean validateForFindData() {
-        return ClassAttributeValidation.hasNonNullAttribute(this);
+        return ClassAttributeValidation.validateAllFields(this);
     }
 
     public Long getId() {

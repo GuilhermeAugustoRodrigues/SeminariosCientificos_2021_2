@@ -7,15 +7,15 @@ public class ProfessorDTO implements FilterValidation {
     private String nome;
     private String email;
     private String telefone;
+    private Double salario;
     private String nomeInstituicao;
     private String cidade;
     private String estado;
     private String pais;
-    private Double salario;
 
     @Override
     public boolean validateForFindData() {
-        return ClassAttributeValidation.hasNonNullAttribute(this);
+        return ClassAttributeValidation.validateAllFields(this);
     }
 
     public Long getId() {
